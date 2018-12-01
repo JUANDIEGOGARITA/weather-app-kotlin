@@ -6,10 +6,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.jd.android.weatherapp.R
 import com.jd.android.weatherapp.adapter.ForecastListAdapter
-import com.jd.android.weatherapp.http.Request
+import com.jd.android.weatherapp.domain.commands.RequestForecastCommand
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
-import org.jetbrains.anko.longToast
 import org.jetbrains.anko.uiThread
 
 class MainActivity : AppCompatActivity() {
@@ -24,10 +23,6 @@ class MainActivity : AppCompatActivity() {
         "Sun 6/29 - Sunny - 20/7"
     )
 
-
-    val url = "http://api.openweathermap.org/data/2.5/forecast/daily?" +
-            "APPID=15646a06818f61f7b8d7823ca833e1ce&zip=94043&mode=json&units=metric&cnt=7"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -36,10 +31,9 @@ class MainActivity : AppCompatActivity() {
         forecastList.adapter = ForecastListAdapter(items)
 
         doAsync {
-            Request(url).run()
-            uiThread { longToast("Request performed") }
+
+            val result = RequestForecastCommand("94043").execute()
+            uiThread { forecastList.adapter = ForecastListAdapter(result) }
         }
     }
-
-
 }
