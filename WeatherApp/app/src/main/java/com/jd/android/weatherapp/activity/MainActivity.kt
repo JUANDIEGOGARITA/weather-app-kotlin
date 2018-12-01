@@ -24,8 +24,8 @@ class MainActivity : AppCompatActivity() {
 
             val result = RequestForecastCommand("94043").execute()
             uiThread {
-                val adapter = ForecastListAdapter(result) { forecast ->
-                    toast(forecast.date)
+                val adapter = ForecastListAdapter(result) {
+                    toast(it.date)
                 }
                 forecastList.adapter = adapter
             }
