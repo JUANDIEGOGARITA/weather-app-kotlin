@@ -1,7 +1,6 @@
-package com.jd.android.weatherapp.http
+package com.jd.android.weatherapp.data
 
 import com.google.gson.Gson
-import com.jd.android.weatherapp.data.ForecastResult
 import java.net.URL
 
 class ForecastRequest(private val zipcode: String) {
