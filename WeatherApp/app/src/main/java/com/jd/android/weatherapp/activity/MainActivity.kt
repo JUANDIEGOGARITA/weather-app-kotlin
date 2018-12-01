@@ -1,9 +1,10 @@
-package com.jd.android.weatherapp
+package com.jd.android.weatherapp.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import com.jd.android.weatherapp.R
 
 class MainActivity : AppCompatActivity() {
 
