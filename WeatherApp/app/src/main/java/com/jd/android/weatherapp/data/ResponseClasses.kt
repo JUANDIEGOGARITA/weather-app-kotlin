@@ -1,6 +1,8 @@
 package com.jd.android.weatherapp.data
 
-data class ForecastResult(val city: City, val list: List<Forecast>)
+import com.jd.android.weatherapp.data.Forecast as dataForecast
+
+data class ForecastResult(val city: City, val list: List<dataForecast>)
 
 data class City(
     val id: Long, val name: String, val coord: Coordinates, val country: String,
