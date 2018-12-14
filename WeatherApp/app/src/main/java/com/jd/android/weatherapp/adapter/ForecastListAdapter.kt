@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import com.jd.android.weatherapp.R
 import com.jd.android.weatherapp.domain.model.Forecast
 import com.jd.android.weatherapp.domain.model.ForecastList
+import kotlinx.android.synthetic.main.item_forecast.*
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_forecast.view.*
+import kotlinx.android.extensions.LayoutContainer
+
 
 class ForecastListAdapter(private val weekForecast: ForecastList, private val itemClick: (Forecast) -> Unit) :
     RecyclerView.Adapter<ForecastListAdapter.ViewHolder>() {
@@ -24,16 +26,16 @@ class ForecastListAdapter(private val weekForecast: ForecastList, private val it
 
     override fun getItemCount(): Int = weekForecast.size
 
-    class ViewHolder(view: View, private val itemClick: (Forecast) -> Unit) :
-        RecyclerView.ViewHolder(view) {
+    class ViewHolder(override val containerView: View, private val itemClick: (Forecast) -> Unit)
+        : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
         fun bindForecast(forecast: Forecast) {
             with(forecast) {
-                Picasso.get().load(iconUrl).into(itemView.icon)
-                itemView.date.text = date
-                itemView.description.text = description
-                itemView.maxTemperature.text = "$high"
-                itemView.minTemperature.text = "$low"
+                Picasso.get().load(iconUrl).into(icon)
+                dateText.text = date
+                descriptionText.text = description
+                maxTemperature.text = "${high}º"
+                minTemperature.text = "${low}º"
 
                 itemView.setOnClickListener { itemClick(this) }
             }

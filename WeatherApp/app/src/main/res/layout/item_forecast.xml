@@ -20,14 +20,14 @@
 
         <TextView android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:id="@+id/date"
+                  android:id="@+id/dateText"
                   tools:text="May 14,"
                   android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
         <TextView android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   tools:text="Light Rain"
-                  android:id="@+id/description"
+                  android:id="@+id/descriptionText"
                   android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
     </LinearLayout>
 
