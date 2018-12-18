@@ -1,6 +1,6 @@
 package com.jd.android.weatherapp.data.db
 
-class CityForecast(map: MutableMap<String, Any?>, val dailyForecast: List<DayForecast>) {
+class CityForecast(val map: MutableMap<String, Any?>, val dailyForecast: List<DayForecast>) {
 
     var _id: Long by map
     var city: String by map
@@ -14,7 +14,7 @@ class CityForecast(map: MutableMap<String, Any?>, val dailyForecast: List<DayFor
     }
 }
 
-class DayForecast(map: MutableMap<String, Any?>) {
+class DayForecast(var map: MutableMap<String, Any?>) {
 
     var _id: Long by map
     var date: Long by map
