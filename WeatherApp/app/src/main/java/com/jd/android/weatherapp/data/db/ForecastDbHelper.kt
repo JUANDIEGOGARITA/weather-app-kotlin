@@ -1,11 +1,12 @@
 package com.jd.android.weatherapp.data.db
 
+import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import com.jd.android.weatherapp.app.App
 import org.jetbrains.anko.db.*
 
-class ForecastDbHelper() : ManagedSQLiteOpenHelper(
-    App.instance, ForecastDbHelper.DB_NAME, null, ForecastDbHelper.DB_VERSION) {
+class ForecastDbHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelper(
+    ctx, ForecastDbHelper.DB_NAME, null, ForecastDbHelper.DB_VERSION) {
 
     override fun onCreate(db: SQLiteDatabase) {
         db.createTable(
