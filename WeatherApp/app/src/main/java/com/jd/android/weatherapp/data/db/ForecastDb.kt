@@ -1,45 +1,45 @@
 package com.jd.android.weatherapp.data.db
 
+import com.jd.android.weatherapp.domain.datasource.ForecastDataSource
 import com.jd.android.weatherapp.domain.model.ForecastList
-import com.jd.android.weatherapp.extensions.clear
-import com.jd.android.weatherapp.extensions.parseList
-import com.jd.android.weatherapp.extensions.parseOpt
-import com.jd.android.weatherapp.extensions.toVarargArray
+import com.jd.android.weatherapp.extensions.*
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
+
 
 class ForecastDb(
     private val forecastDbHelper: ForecastDbHelper = ForecastDbHelper.instance,
     private val dataMapper: DbDataMapper = DbDataMapper()
-) {
+) : ForecastDataSource {
 
-    fun requestForecastByZipCode(zipCode: Long, date: Long) = forecastDbHelper.use {
-        val dailyRequest = "${DayForecastTable.CITY_ID} = {id}" +
-                "AND ${DayForecastTable.DATE} >= {date}"
+    override fun requestForecastByZipCode(zipCode: Long, date: Long) = forecastDbHelper.use {
 
+        val dailyRequest = "${DayForecastTable.CITY_ID} = ? AND ${DayForecastTable.DATE} >= ?"
         val dailyForecast = select(DayForecastTable.NAME)
-            .whereArgs(dailyRequest, "id" to zipCode, "date" to date)
+            .whereSimple(dailyRequest, zipCode.toString(), date.toString())
             .parseList { DayForecast(HashMap(it)) }
 
         val city = select(CityForecastTable.NAME)
-            .whereSimple(
-                "${CityForecastTable.ID} = ?",
-                zipCode.toString()
-            )
+            .whereSimple("${CityForecastTable.ID} = ?", zipCode.toString())
             .parseOpt { CityForecast(HashMap(it), dailyForecast) }
 
-        if (city != null) dataMapper.convertToDomain(city) else null
+        city?.let { dataMapper.convertToDomain(it) }
+    }
+
+    override fun requestDayForecast(id: Long) = forecastDbHelper.use {
+        val forecast = select(DayForecastTable.NAME).byId(id).parseOpt { DayForecast(HashMap(it)) }
+
+        forecast?.let { dataMapper.convertDayToDomain(it) }
     }
 
     fun saveForecast(forecast: ForecastList) = forecastDbHelper.use {
+
         clear(CityForecastTable.NAME)
         clear(DayForecastTable.NAME)
 
         with(dataMapper.convertFromDomain(forecast)) {
             insert(CityForecastTable.NAME, *map.toVarargArray())
-            dailyForecast.forEach {
-                insert(DayForecastTable.NAME, *it.map.toVarargArray())
-            }
+            dailyForecast.forEach { insert(DayForecastTable.NAME, *it.map.toVarargArray()) }
         }
     }
 }
