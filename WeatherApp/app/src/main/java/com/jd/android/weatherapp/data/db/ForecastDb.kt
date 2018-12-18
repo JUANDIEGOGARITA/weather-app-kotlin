@@ -1,13 +1,12 @@
 package com.jd.android.weatherapp.data.db
 
-import com.jd.android.weatherapp.domain.mappers.ForecastDataMapper
 import com.jd.android.weatherapp.extensions.parseList
 import com.jd.android.weatherapp.extensions.parseOpt
 import org.jetbrains.anko.db.select
 
 class ForecastDb(
     private val forecastDbHelper: ForecastDbHelper = ForecastDbHelper.instance,
-    private val dataMapper: ForecastDataMapper = ForecastDataMapper()) {
+    private val dataMapper: DbDataMapper = DbDataMapper()) {
 
     fun requestForecastByZipCode(zipCode: Long, date: Long) = forecastDbHelper.use {
         val dailyRequest = "${DayForecastTable.CITY_ID} = {id}" +
@@ -23,5 +22,7 @@ class ForecastDb(
                 zipCode.toString()
             )
             .parseOpt { CityForecast(HashMap(it), dailyForecast) }
+
+        if (city != null) dataMapper.convertToDomain(city) else null
     }
 }
