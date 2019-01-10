@@ -6,9 +6,10 @@ import com.jd.android.weatherapp.domain.model.ForecastList
 
 class DbDataMapper {
 
-    fun convertFromDomain(forecast: ForecastList) = with(forecast) {
-        val daily = dailyForecast.map { convertDayFromDomain(id, it) }
-        CityForecast(id, city, country, daily)
+    fun convertFromDomain(forecast: ForecastList) =
+        with(forecast) {
+            val daily = dailyForecast.map { convertDayFromDomain(id, it) }
+            CityForecast(id, city, country, daily)
     }
 
     private fun convertDayFromDomain(cityId: Long, forecast: Forecast) = with(forecast) {
