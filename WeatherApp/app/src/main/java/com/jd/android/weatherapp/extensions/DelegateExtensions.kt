@@ -11,9 +11,13 @@ class LongPreference(private val context: Context, private val name: String, val
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): Long =
         prefs.getLong(name, default)
+
+    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: Long) {
+        prefs.edit().putLong(name, value).apply()
+    }
 }
 
-object DelefatesExt {
+object DelegatesExt {
 
     fun longPreference(context: Context, name: String, default: Long) =
         LongPreference(context, name, default)
