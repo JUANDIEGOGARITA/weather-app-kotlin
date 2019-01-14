@@ -20,6 +20,9 @@ android {
     }
 }
 
+buildscript {
+    ext.mockito_version = '2.16.0'
+}
 kotlin {
     experimental {
         coroutines "enable"
@@ -44,6 +47,7 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
 
     testImplementation "junit:junit:$junit_version"
+    testImplementation "org.mockito:mockito-core:$mockito_version"
     androidTestImplementation "com.android.support.test:runner:$runner_version"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$expresso_core_version"
 }
