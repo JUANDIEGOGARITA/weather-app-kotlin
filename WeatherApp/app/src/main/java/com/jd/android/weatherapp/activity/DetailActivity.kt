@@ -36,8 +36,14 @@ class DetailActivity : AppCompatActivity(), ToolbarManager {
         toolbarTitle = intent.getStringExtra(CITY_NAME)
         enableHomeAsUp { onBackPressed() }
 
+        loadForecast()
+    }
+
+    private fun loadForecast() {
+        val id = intent.getLongExtra(ID, -1)
+
         doAsync {
-            val result = RequestDayForecastCommand(intent.getLongExtra(ID, -1)).execute()
+            val result = RequestDayForecastCommand(id).execute()
             uiThread {
                 bindForecast(result)
             }
